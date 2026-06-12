@@ -1,0 +1,32 @@
+{
+  "harnessVersion": "1.0.0-enermics-opt",
+  "projectName": "ENERMICS",
+  "defaultLanguage": "ko",
+  "limits": {
+    "maxRepairLoops": 3,
+    "maxFileSizeLines": 600,
+    "maxFileSizeKb": 30,
+    "warningContextTokens": 100000
+  },
+  "roles": [
+    "orchestrator",
+    "renewables-data-analyst",
+    "ux-architect",
+    "visual-design-director",
+    "frontend-implementer",
+    "design-evaluator",
+    "technical-evaluator",
+    "qa-verifier"
+  ],
+  "verification": {
+    "requireScreenshot": false,
+    "requireDesignPassVerdict": true,
+    "allowFallbackManualChecklist": true
+  },
+  "approvalGates": [
+    "architecture_change",
+    "dependency_addition",
+    "bulk_file_movement",
+    "deployment"
+  ]
+}
