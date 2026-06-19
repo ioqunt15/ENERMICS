@@ -43,18 +43,18 @@ export function formatTime(date) {
 export const SCENARIOS = {
   sunny: {
     name: '맑음 (맑은 날)',
-    desc: '태양광 발전 최적화. 바람은 온화함.',
+    desc: '태양광 발전 최적화. 바람은 강하게 불어 풍성한 발전.',
     solarIrradianceBase: 850,
     solarTempBase: 22,
-    windSpeedBase: 5.5,
+    windSpeedBase: 10.5,
     humidityBase: 35
   },
   cloudy: {
     name: '흐림 / 비',
-    desc: '구름으로 인한 태양광 저하. 바람 다소 강함.',
+    desc: '구름으로 인한 태양광 저하. 바람이 세차게 불어 우수한 발전.',
     solarIrradianceBase: 180,
     solarTempBase: 16,
-    windSpeedBase: 7.2,
+    windSpeedBase: 11.5,
     humidityBase: 85
   },
   storm: {
@@ -261,8 +261,29 @@ export function getForecastData(plantType, scenarioKey) {
       avgGenForecast = 35 + (rand * 15) * weatherMult;
       avgGenActual = avgGenForecast + (seededRandom(seed + 5) * 4 - 2);
     } else {
-      const weatherMult = scenarioKey === 'storm' ? 0.3 : scenarioKey === 'cloudy' ? 0.75 : scenarioKey === 'sunny' ? 0.25 : 0.05;
-      avgGenForecast = 8.0 + (rand * 12.0) * weatherMult;
+      let weatherMult = 0.25;
+      let baseVal = 8.0;
+      let randScale = 12.0;
+
+      if (scenarioKey === 'sunny') {
+        baseVal = 20.0;
+        randScale = 10.0;
+        weatherMult = 1.0;
+      } else if (scenarioKey === 'cloudy') {
+        baseVal = 24.0;
+        randScale = 8.0;
+        weatherMult = 1.0;
+      } else if (scenarioKey === 'storm') {
+        baseVal = 12.5;
+        randScale = 0.0;
+        weatherMult = 0.0;
+      } else if (scenarioKey === 'heatwave') {
+        baseVal = 1.5;
+        randScale = 2.0;
+        weatherMult = 1.0;
+      }
+
+      avgGenForecast = baseVal + (rand * randScale) * weatherMult;
       if (scenarioKey === 'storm') {
         avgGenForecast = 12.5;
         avgGenActual = 3.2; // cutouts
@@ -297,8 +318,8 @@ export function getForecastData(plantType, scenarioKey) {
       actualMWh = forecastMWh + (Math.sin(i * 3.5) * 400 - 200);
     } else {
       const seasonalWind = 0.5 + Math.cos((mIndex - 1) / 12 * Math.PI * 2) * 0.5;
-      forecastMWh = 4800 * seasonalWind + (Math.sin(i * 1.5) * 350);
-      actualMWh = forecastMWh + (Math.sin(i * 4.2) * 200 - 100);
+      forecastMWh = 18000 * seasonalWind + (Math.sin(i * 1.5) * 1200);
+      actualMWh = forecastMWh + (Math.sin(i * 4.2) * 800 - 400);
     }
     
     longTerm.push({
