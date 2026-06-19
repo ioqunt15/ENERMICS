@@ -57,7 +57,7 @@ export default function WindDashboard({ realtimeStats, forecastData, scenario, l
           <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
             <h3 style={{ fontSize: '12px', fontWeight: 700, wordBreak: 'keep-all' }}>{t.scadaTitle}</h3>
             <span className="numeric" style={{ fontSize: '11px', color: 'var(--color-emerald)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-              {t.totalGenLabel}: {realtimeStats.totalGeneration} MW
+              {t.totalGenLabel}: {Number(realtimeStats.totalGeneration).toFixed(2)} MW
             </span>
           </div>
 
@@ -102,13 +102,13 @@ export default function WindDashboard({ realtimeStats, forecastData, scenario, l
 
                   <div style={{ display: 'flex', gap: '10px', textAlign: 'right', alignItems: 'center' }}>
                     <div style={{ fontSize: '9px', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
-                      <div>{t.outTemp}: <span className="numeric">{tItem.hubTemp}℃</span></div>
-                      <div>{t.inTemp}: <span className="numeric">{tItem.nacelleTemp}℃</span></div>
+                      <div>{t.outTemp}: <span className="numeric">{Number(tItem.hubTemp).toFixed(1)}℃</span></div>
+                      <div>{t.inTemp}: <span className="numeric">{Number(tItem.nacelleTemp).toFixed(1)}℃</span></div>
                     </div>
                     
                     <div style={{ minWidth: '60px' }}>
                       <div className="numeric" style={{ fontSize: '10px', color: 'var(--color-cyan)', fontWeight: 'bold' }}>
-                        {tItem.windSpeed} m/s
+                        {Number(tItem.windSpeed).toFixed(1)} m/s
                       </div>
                       {isCutOut ? (
                         <span style={{
@@ -125,7 +125,7 @@ export default function WindDashboard({ realtimeStats, forecastData, scenario, l
                         </span>
                       ) : (
                         <div className="numeric" style={{ fontSize: '12px', color: '#ffea00', fontWeight: 'bold' }}>
-                          {tItem.generation} <span style={{ fontSize: '8px' }}>kW</span>
+                          {Math.round(tItem.generation)} <span style={{ fontSize: '8px' }}>kW</span>
                         </div>
                       )}
                     </div>

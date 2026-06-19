@@ -5,8 +5,8 @@
 
 export const TRANSLATIONS = {
   ko: {
-    brandSub: '기상-에너지 융합 분석 플랫폼',
-    brandDesc: 'RENEWABLE FORECASTING PLATFORM',
+    brandSub: 'Environment and Energy Meteorological Information Convergence Solution',
+    brandDesc: '신재생에너지 생산성 예측 솔루션',
     aiStatus: 'AI 예측 보정망 가동 중',
     solarTab: '솔라시도 태양광',
     windTab: '영암 풍력발전',
@@ -96,8 +96,8 @@ export const TRANSLATIONS = {
     imageInfo: '영상 정보',
 
     // Weather cycling badge
-    weatherCycleBadge: '날씨 환경 자동 순환 중',
-    weatherCyclePeriod: '90s 주기',
+    weatherCycleBadge: '현재 기상 상태',
+    weatherCyclePeriod: '데이터 고정',
 
     // Dashboard UI Additions
     kmaSync: '연동',
@@ -108,8 +108,8 @@ export const TRANSLATIONS = {
     resetView: '전체 영역 보기'
   },
   en: {
-    brandSub: 'METEOROLOGICAL CONVERGENCE',
-    brandDesc: 'RENEWABLE FORECASTING PLATFORM',
+    brandSub: 'Environment and Energy Meteorological Information Convergence Solution',
+    brandDesc: 'Renewable Generation Forecasting Solution',
     aiStatus: 'AI Prediction Network Active',
     solarTab: 'Solaseado Solar',
     windTab: 'Yeongam Wind',
@@ -199,8 +199,8 @@ export const TRANSLATIONS = {
     imageInfo: 'Imagery Info',
 
     // Weather cycling badge
-    weatherCycleBadge: 'Weather Scenario Cycling',
-    weatherCyclePeriod: '90s Period',
+    weatherCycleBadge: 'Current Weather State',
+    weatherCyclePeriod: 'Stable Data',
 
     // Dashboard UI Additions
     kmaSync: 'Sync',
@@ -211,8 +211,8 @@ export const TRANSLATIONS = {
     resetView: 'Reset Map View'
   },
   vi: {
-    brandSub: 'HỘI TỤ KHÍ TƯỢNG NĂNG LƯỢNG',
-    brandDesc: 'NỀN TẢNG DỰ BÁO NĂNG LƯỢNG',
+    brandSub: 'Environment and Energy Meteorological Information Convergence Solution',
+    brandDesc: 'Giải pháp dự báo sản lượng năng lượng tái tạo',
     aiStatus: 'Mạng lưới hiệu chuẩn AI Active',
     solarTab: 'Điện mặt trời Solaseado',
     windTab: 'Điện gió Yeongam',
@@ -302,8 +302,8 @@ export const TRANSLATIONS = {
     imageInfo: 'Thông tin hình ảnh',
 
     // Weather cycling badge
-    weatherCycleBadge: 'Tự động tuần hoàn thời tiết',
-    weatherCyclePeriod: 'Chu kỳ 90 giây',
+    weatherCycleBadge: 'Trạng thái thời tiết hiện tại',
+    weatherCyclePeriod: 'Dữ liệu ổn định',
 
     // Dashboard UI Additions
     kmaSync: 'Đồng bộ',

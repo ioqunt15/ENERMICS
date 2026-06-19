@@ -71,26 +71,26 @@ export default function SolarDashboard({ realtimeStats, forecastData, scenario, 
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.genLabel}</span>
                   <div style={{ whiteSpace: 'nowrap' }}>
                     <span className="numeric" style={{ fontSize: '20px', color: '#ff4d4d', fontWeight: 'bold', textShadow: '0 0 8px rgba(255,77,77,0.3)' }}>
-                      {realtimeStats.generation}
+                      {Number(realtimeStats.generation).toFixed(2)}
                     </span>
                     <span style={{ fontSize: '10px', color: '#ff4d4d', fontWeight: 'bold', marginLeft: '3px' }}>MW</span>
                   </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.tempLabel}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.airTemp} ℃</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.airTemp).toFixed(1)} ℃</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.panelTempLabel}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold', color: 'var(--color-cyan)' }}>{realtimeStats.moduleTemp} ℃</span>
+                  <span className="numeric" style={{ fontWeight: 'bold', color: 'var(--color-cyan)' }}>{Number(realtimeStats.moduleTemp).toFixed(1)} ℃</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.horizIrradiance}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.horizontalIrradiance} W/㎡</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.horizontalIrradiance).toFixed(1)} W/㎡</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.inclinedIrradiance}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold', color: 'var(--color-cyan)' }}>{realtimeStats.inclinedIrradiance} W/㎡</span>
+                  <span className="numeric" style={{ fontWeight: 'bold', color: 'var(--color-cyan)' }}>{Number(realtimeStats.inclinedIrradiance).toFixed(1)} W/㎡</span>
                 </div>
               </div>
             </div>
@@ -103,25 +103,25 @@ export default function SolarDashboard({ realtimeStats, forecastData, scenario, 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '11px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.kmaTemp}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.kma.temp} ℃</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.kma.temp).toFixed(1)} ℃</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.kmaPanelTemp}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.kma.moduleTemp} ℃</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.kma.moduleTemp).toFixed(1)} ℃</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.kmaIrradiance}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.kma.irradiance} W/㎡</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.kma.irradiance).toFixed(1)} W/㎡</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.humidityLabel}</span>
-                  <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.kma.humidity} %</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Math.round(realtimeStats.kma.humidity)} %</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: 'var(--color-text-muted)', wordBreak: 'keep-all' }}>{t.windSpeedLabel}</span>
                   <span style={{ whiteSpace: 'nowrap' }}>
                     <span style={{ color: 'var(--color-text-darker)', marginRight: '4px' }}>{realtimeStats.kma.windDir}</span>
-                    <span className="numeric" style={{ fontWeight: 'bold' }}>{realtimeStats.kma.windSpeed} m/s</span>
+                    <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(realtimeStats.kma.windSpeed).toFixed(1)} m/s</span>
                   </span>
                 </div>
               </div>

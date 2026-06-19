@@ -16,7 +16,8 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
         if (entry.contentRect.width > 50) {
-          setWidth(entry.contentRect.width);
+          const nextWidth = Math.round(entry.contentRect.width);
+          setWidth(prev => Math.abs(prev - nextWidth) > 1 ? nextWidth : prev);
         }
       }
     });
@@ -81,8 +82,16 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
   const getX = (index) => paddingLeft + marginX + (index / (data.length - 1)) * (chartWidth - 2 * marginX);
   const getY = (val) => height - paddingBottom - (Math.min(maxValue, Math.max(0, val)) / maxValue) * chartHeight;
 
+  const hasActualValue = (item) => (
+    activeVar === 'generation' &&
+    item.actualAvailable !== false &&
+    Number.isFinite(item.actual)
+  );
+
   const pointsForecast = data.map((item, idx) => ({ x: getX(idx), y: getY(getValue(item, true)) }));
-  const pointsActual = data.map((item, idx) => ({ x: getX(idx), y: getY(getValue(item, false)) }));
+  const pointsActual = data
+    .map((item, idx) => hasActualValue(item) ? ({ x: getX(idx), y: getY(getValue(item, false)), index: idx }) : null)
+    .filter(Boolean);
 
   const getLinePath = (pts) => {
     if (pts.length === 0) return '';
@@ -126,7 +135,7 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
   };
 
   const forecastColor = '#1a75ff';
-  let actualColor = type === 'solar' ? '#ff7a00' : '#0c8';
+  let actualColor = '#0c8';
   let unit = 'MW';
 
   switch (activeVar) {
@@ -241,8 +250,15 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
             <path d={getAreaPath(pointsForecast)} fill="url(#chartGradBlue)" />
             <path d={getLinePath(pointsForecast)} fill="none" stroke={forecastColor} strokeWidth="1.8" />
             
-            <path d={getAreaPath(pointsActual)} fill={type === 'solar' ? 'url(#chartGradOrange)' : 'url(#chartGradGreen)'} />
-            <path d={getLinePath(pointsActual)} fill="none" stroke={actualColor} strokeWidth="1.5" strokeDasharray="3,2" />
+            {pointsActual.length > 1 && (
+              <>
+                <path d={getAreaPath(pointsActual)} fill="url(#chartGradGreen)" />
+                <path d={getLinePath(pointsActual)} fill="none" stroke={actualColor} strokeWidth="1.5" strokeDasharray="3,2" />
+              </>
+            )}
+            {pointsActual.map(point => (
+              <circle key={`actual-${point.index}`} cx={point.x} cy={point.y} r="3" fill={actualColor} />
+            ))}
           </>
         ) : (
           <>
@@ -273,7 +289,9 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
             {activeVar === 'generation' ? (
               <>
                 <circle cx={getX(hoverIndex)} cy={getY(getValue(data[hoverIndex], true))} r="3.5" fill={forecastColor} />
-                <circle cx={getX(hoverIndex)} cy={getY(getValue(data[hoverIndex], false))} r="3.5" fill={actualColor} />
+                {hasActualValue(data[hoverIndex]) && (
+                  <circle cx={getX(hoverIndex)} cy={getY(getValue(data[hoverIndex], false))} r="3.5" fill={actualColor} />
+                )}
               </>
             ) : (
               <circle 
@@ -313,18 +331,20 @@ export function ShortTermChart({ data = [], type = 'solar', activeVar = 'generat
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: forecastColor }}>
                 <span>예측량:</span>
-                <span className="numeric" style={{ fontWeight: 'bold' }}>{data[hoverIndex].forecast} {unit}</span>
+                <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(data[hoverIndex].forecast).toFixed(1)} {unit}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: actualColor }}>
-                <span>실측량:</span>
-                <span className="numeric" style={{ fontWeight: 'bold' }}>{data[hoverIndex].actual} {unit}</span>
-              </div>
+              {hasActualValue(data[hoverIndex]) && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: actualColor }}>
+                  <span>실측량:</span>
+                  <span className="numeric" style={{ fontWeight: 'bold' }}>{Number(data[hoverIndex].actual).toFixed(1)} {unit}</span>
+                </div>
+              )}
             </>
           ) : (
             <div style={{ display: 'flex', justifyContent: 'space-between', color: activeVar === 'temp' ? '#ff3b30' : forecastColor }}>
               <span>{getVarName()}:</span>
               <span className="numeric" style={{ fontWeight: 'bold' }}>
-                {getValue(data[hoverIndex])} {unit}
+                {Number(getValue(data[hoverIndex])).toFixed(1)} {unit}
               </span>
             </div>
           )}
@@ -346,7 +366,8 @@ export function TrendChart({ data = [], type = 'solar', viewType = 'medium' }) {
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
         if (entry.contentRect.width > 50) {
-          setWidth(entry.contentRect.width);
+          const nextWidth = Math.round(entry.contentRect.width);
+          setWidth(prev => Math.abs(prev - nextWidth) > 1 ? nextWidth : prev);
         }
       }
     });
@@ -363,8 +384,9 @@ export function TrendChart({ data = [], type = 'solar', viewType = 'medium' }) {
   const height = 110;
   const marginX = 22; // Safe side margin to group columns gracefully away from borders
 
+  const actualValues = data.map(d => d.actual).filter(Number.isFinite);
   const maxForecast = Math.max(...data.map(d => d.forecast));
-  const maxActual = Math.max(...data.map(d => d.actual));
+  const maxActual = actualValues.length > 0 ? Math.max(...actualValues) : 0;
   const maxValue = Math.max(1, Math.ceil(Math.max(maxForecast, maxActual) * 1.15));
 
   const chartWidth = width - paddingLeft - paddingRight;
@@ -374,7 +396,7 @@ export function TrendChart({ data = [], type = 'solar', viewType = 'medium' }) {
   const getX = (index) => paddingLeft + marginX + (index / (data.length - 1)) * (chartWidth - 2 * marginX);
   const getY = (val) => height - paddingBottom - (val / maxValue) * chartHeight;
 
-  const accentColor = type === 'solar' ? '#ff7a00' : '#0c8';
+  const accentColor = '#0c8';
 
   const gridLevels = 2;
   const gridLines = Array.from({ length: gridLevels + 1 }, (_, i) => {
@@ -414,7 +436,8 @@ export function TrendChart({ data = [], type = 'solar', viewType = 'medium' }) {
           const x = getX(idx);
           const barWidth = viewType === 'long' ? 8 : 14; // Thicker bars for better visual presence
           const yForecast = getY(item.forecast);
-          const yActual = getY(item.actual);
+          const hasActual = item.actualAvailable !== false && Number.isFinite(item.actual);
+          const yActual = hasActual ? getY(item.actual) : null;
           const zeroY = height - paddingBottom;
           
           return (
@@ -430,17 +453,19 @@ export function TrendChart({ data = [], type = 'solar', viewType = 'medium' }) {
                 strokeWidth="0.8"
                 rx="1"
               />
-              {/* Actual (Orange/Green) - aligned to the right of x */}
-              <rect
-                x={x}
-                y={yActual}
-                width={barWidth}
-                height={Math.max(1, zeroY - yActual)}
-                fill={type === 'solar' ? 'rgba(255, 122, 0, 0.45)' : 'rgba(0, 204, 136, 0.45)'}
-                stroke={accentColor}
-                strokeWidth="0.8"
-                rx="1"
-              />
+              {/* Actual production - only rendered where telemetry exists */}
+              {hasActual && (
+                <rect
+                  x={x}
+                  y={yActual}
+                  width={barWidth}
+                  height={Math.max(1, zeroY - yActual)}
+                  fill="rgba(0, 204, 136, 0.45)"
+                  stroke={accentColor}
+                  strokeWidth="0.8"
+                  rx="1"
+                />
+              )}
             </g>
           );
         })}

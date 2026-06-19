@@ -26,7 +26,7 @@ function getWindTurbinePower(windSpeed) {
   }
   
   if (windSpeed >= ratedSpeed) {
-    return ratedPower + (Math.random() * 20 - 10);
+    return ratedPower;
   }
 
   const ratio = (windSpeed - cutIn) / (ratedSpeed - cutIn);
@@ -46,7 +46,7 @@ export const SCENARIOS = {
     desc: '태양광 발전 최적화. 바람은 온화함.',
     solarIrradianceBase: 850,
     solarTempBase: 22,
-    windSpeedBase: 3.5,
+    windSpeedBase: 5.5,
     humidityBase: 35
   },
   cloudy: {
@@ -154,11 +154,13 @@ export function getWindRealtimeStats(scenarioKey) {
 export function getForecastData(plantType, scenarioKey) {
   const sc = SCENARIOS[scenarioKey] || SCENARIOS.sunny;
   const shortTerm = [];
-  const currentHour = new Date().getHours();
+  const now = new Date();
+  const currentHour = now.getHours();
   
   for (let i = 0; i < 24; i++) {
     const forecastHour = (currentHour + i) % 24;
     const hourLabel = `${String(forecastHour).padStart(2, '0')}:00`;
+    const actualAvailable = i === 0;
     
     let genForecast = 0;
     let genActual = 0;
@@ -220,7 +222,8 @@ export function getForecastData(plantType, scenarioKey) {
     shortTerm.push({
       time: hourLabel,
       forecast: genForecast,
-      actual: genActual,
+      actual: actualAvailable ? genActual : null,
+      actualAvailable,
       
       // Solar variables
       horizontalRad,
@@ -271,7 +274,8 @@ export function getForecastData(plantType, scenarioKey) {
     mediumTerm.push({
       time: dayLabel,
       forecast: parseFloat(Math.max(0, avgGenForecast).toFixed(1)),
-      actual: parseFloat(Math.max(0, avgGenActual).toFixed(1))
+      actual: i === 0 ? parseFloat(Math.max(0, avgGenActual).toFixed(1)) : null,
+      actualAvailable: i === 0
     });
   }
   
@@ -300,7 +304,8 @@ export function getForecastData(plantType, scenarioKey) {
     longTerm.push({
       time: monthLabel,
       forecast: Math.round(Math.max(0, forecastMWh)),
-      actual: Math.round(Math.max(0, actualMWh))
+      actual: i === 0 ? Math.round(Math.max(0, actualMWh)) : null,
+      actualAvailable: i === 0
     });
   }
   

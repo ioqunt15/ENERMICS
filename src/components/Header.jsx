@@ -56,10 +56,12 @@ export default function Header({
       background: 'rgba(3, 11, 20, 0.9)',
       boxShadow: '0 4px 18px rgba(0, 0, 0, 0.55)',
       zIndex: 10,
-      flexWrap: 'nowrap'
+      flexWrap: 'nowrap',
+      gap: '14px',
+      overflow: 'hidden'
     }}>
       {/* Brand area */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: '1 1 430px', minWidth: 0 }}>
         <div style={{
           color: '#030c16',
           background: '#f7fbfff2',
@@ -73,15 +75,17 @@ export default function Header({
         }}>
           ENERMICS
         </div>
-        <div style={{ minWidth: '110px' }}>
+        <div style={{ minWidth: 0, maxWidth: '560px' }}>
           <span style={{
-            letterSpacing: '0.08em',
+            letterSpacing: 0,
             color: '#e0eeffe6',
-            fontSize: '8.5px',
+            fontSize: '9.5px',
             fontWeight: 800,
             display: 'block',
             lineHeight: '1.1',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}>
             {t.brandSub}
           </span>
@@ -91,7 +95,9 @@ export default function Header({
             fontWeight: 700,
             display: 'block',
             marginTop: '1px',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}>
             {t.brandDesc}
           </span>
@@ -99,7 +105,7 @@ export default function Header({
       </div>
 
       {/* Switcher tabs */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: '0 0 auto' }}>
         <div style={{
           display: 'flex',
           background: 'rgba(0,0,0,0.5)',
@@ -156,7 +162,7 @@ export default function Header({
       </div>
 
       {/* Language selector & Clock */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px', flex: '1 1 430px', minWidth: 0 }}>
         
         {/* Language selector */}
         <div className="language-selector" style={{ display: 'flex', gap: '3px' }}>

@@ -5,13 +5,10 @@ import WindDashboard from './components/WindDashboard';
 import { getSolarRealtimeStats, getWindRealtimeStats, getForecastData } from './utils/dataGenerator';
 import { TRANSLATIONS } from './utils/i18n';
 
-const SCENARIO_CYCLE = ['sunny', 'cloudy', 'storm', 'heatwave'];
-
 export default function App() {
   const [lang, setLang] = useState('ko');
   const [currentPlant, setCurrentPlant] = useState('solar');
-  const [scenarioIndex, setScenarioIndex] = useState(0);
-  const scenario = SCENARIO_CYCLE[scenarioIndex];
+  const [scenario] = useState('sunny');
   
   // Real-time stats
   const [solarStats, setSolarStats] = useState(null);
@@ -20,16 +17,7 @@ export default function App() {
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS.ko;
 
-  // 1. Automatically cycle weather scenarios every 90 seconds to show case DSS alerts & map changes
-  useEffect(() => {
-    const cycleInterval = setInterval(() => {
-      setScenarioIndex(prev => (prev + 1) % SCENARIO_CYCLE.length);
-    }, 90000); // 90 seconds
-
-    return () => clearInterval(cycleInterval);
-  }, []);
-
-  // 2. Load and refresh baseline metrics on scenario change
+  // 1. Load baseline metrics once. Forecasts stay stable unless the scenario is changed intentionally.
   useEffect(() => {
     const hour = new Date().getHours();
     
@@ -42,7 +30,7 @@ export default function App() {
     });
   }, [scenario]);
 
-  // 3. Telemetry Ticker loop (updates every 4 seconds)
+  // 2. Telemetry Ticker loop (updates every 4 seconds)
   useEffect(() => {
     const telemetryInterval = setInterval(() => {
       const hour = new Date().getHours();
